@@ -35,3 +35,8 @@ body, html {
     background-repeat: no-repeat;
     background-size: cover;
 }
+@media (min-width: 900px) {
+    .m-bg-top {
+        margin-top: 275px;
+    }
+}
