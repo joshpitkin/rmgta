@@ -1,0 +1,44 @@
+.table-condensed>tbody>tr>td,
+.table-condensed>tbody>tr>th,
+.table-condensed>tfoot>tr>td,
+.table-condensed>tfoot>tr>th,
+.table-condensed>thead>tr>td,
+.table-condensed>thead>tr>th  {
+    padding: 2px;
+    font-size: 12px
+}
+
+.table-responsive {
+    width: auto;
+}
+
+.pareto-td-flex-row{
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    height: 100%;
+}
+
+.pareto-svg{
+    max-width: 70%;
+    border: solid 1px rgba(0, 0, 0, 0.1);
+}
+
+.pareto-value{
+    max-width: 30%;
+}
+
+.table-selection{
+    opacity:0;
+    filter:alpha(opacity=0);
+    width: 0;
+    height:0;
+    overflow: hidden;
+}
+
+.selected-item{
+    border: 3px solid gray;
+    outline: none;
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
+}

@@ -1,0 +1,206 @@
+<div *ngIf="columns && columns.length > 0;  else loading" class="table" style="margin-bottom: 0px;">
+
+    <table style="width: 100%;" class="table-sm table-bordered">
+        <tr [ngClass]="Config.outerTrClass" *ngIf="Config.showGlobalFilter" class="table-active">
+            <td [attr.colspan]="TotalColumnCount()">
+                <div class="form-inline justify-content-between">
+                    <div *ngIf="Config.tableTitle != ''" class="h4">
+                        {{Config.tableTitle}}
+                    </div>
+                    <div class="form-group">
+                        <button *ngIf="Config.showFilterToggleButton" type="button" (click)="ToggleFilterSortRow()" class="btn btn-sm btn-primary">
+                            <i class="fa fa-filter"></i>
+                        </button>
+                        <button *ngIf="Config.showExportToCsv" type="button" (click)="ExportToCsv()" class="btn btn-sm btn-primary mx-1" tooltip="Export to .csv">
+                            <i class="fa fa-download"></i>
+                        </button>
+                    </div>
+                    <div class="form-group pull-right">
+                        <span *ngIf="Config.showGlobalFilterLabel" class="m-1">Quick Search:</span>
+                        <input type="text"
+                            style="font-family: FontAwesome;"
+                            [ngModel]="filter"
+                            (ngModelChange)="onGlobalFilterChange($event)"
+                            placeholder="&#xF002;"
+                            class="form-control form-control-sm"
+                        />
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <ng-container *ngIf="Config.columnHeaderConfigs">
+		    <tr *ngFor="let row of Config.columnHeaderConfigs; let rowIdx = index">
+		        <th *ngFor="let trheader of row; let i = index"
+                    [ngStyle]="GetHeaderStyle(trheader)"
+                    [attr.colspan]="trheader.headercolumnColSpan">
+                    <div *ngIf="trheader">
+                        {{trheader.headercolumnLabel}}
+                    </div>
+                </th>
+		    </tr>
+        </ng-container>
+        <tr>
+            <th *ngIf="NeedsButtonColumn()"></th>
+            <th *ngFor="let column of Config.columnConfig"
+                (click)="ToggleAndSort(column.columnProp, $event)"
+                [ngClass]="Config.thClass" 
+                [ngStyle]="GetColumnStyle(column)">
+                <div *ngIf="column && !columnHeaderTemplate">
+                    {{column.columnLabel}}
+                    <span><i [ngClass]="column.sortClass"></i></span>
+                </div>
+                <ng-container *ngTemplateOutlet="columnHeaderTemplate; context: {column: column}"></ng-container>
+
+            </th>
+        </tr>
+        <tr *ngIf="filterRowVisible">
+            <th *ngIf="NeedsButtonColumn()">...</th>
+            <th *ngFor="let column of Config.columnConfig " [ngClass]="Config.thClass" >
+                <div *ngIf="column && !columnFilterTemplate && (column.columnHeaderFilterType == 'input' || !column.columnHeaderFilterType)" class="input-group">
+                    <input type="text"
+                        style="font-family: FontAwesome;"
+                        [ngModel]="filterlkp[column]"
+                        (ngModelChange)="onFilterChange(column.columnProp, $event)"
+                        placeholder="&#xF002;"
+                        class="form-control form-control-sm"
+                    />
+                </div>
+                <div *ngIf="column && !columnFilterTemplate && column.columnHeaderFilterType == 'dropdown'" class="input-group">
+                    <select class="form-control form-control-sm" name="dropDownColumn" (change)="onDropdownChanged(column.columnProp, $event.target.value)">
+                        <option>(all)</option>
+                        <option *ngFor="let s of column.dropdownsVals">{{s}}</option>
+                    </select>
+                </div>
+                <div *ngIf="column && !columnFilterTemplate && column.columnHeaderFilterType == 'multiselect'" class="input-group">
+                    <platform-multiselect-dropdown *ngIf="column.multiSelectVals" [settings]="multiSelectSettings" [(ngModel)]="column.selectedValues"
+                    (onAdded)="onMultiselectChanged(column)" (onRemoved)="onMultiselectChanged(column)"
+                            [options]="column.multiSelectVals"></platform-multiselect-dropdown>
+                </div>
+                <ng-container *ngTemplateOutlet="columnFilterTemplate; context: {column: column}"></ng-container>
+            </th>
+        </tr>
+        <tr *ngIf="dropdownRowVisible">
+            <th *ngIf="NeedsButtonColumn()">...</th>
+
+            <th *ngFor="let column of columns; let colIdx = index" [ngClass]="Config.thClass">
+                <div class="input-group">
+                    <select name="dropDownColumn" (change)="onDropdownChanged(column, $event.target.value)">
+                        <option>(all)</option>
+                        <option *ngFor="let s of dropdowns[colIdx]">{{s}}</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button class="btn btn-sm btn-secondary" style="padding: .1rem;" type="button" (click)="ToggleAndSort(column, $event)">
+                            <i class="fa fa-sort-amount-asc"></i>
+                        </button>
+                    </span>
+                </div>
+            </th>
+        </tr>
+        <tr  
+            (click)='onRowClick(row,rowIdx)'
+            (mouseover)='ClientHover(rowIdx)'
+            *ngFor="let row of currentPageOfRows; let rowIdx = index"
+            [ngClass]="{'selected-item':rowIdx == selectedRow && Config.selectMode == 'row'}"
+            class="{{Config.trClass}} {{row[row.length-1]['row-class'] || ''}}">
+            <td *ngIf="Config && Config.buttonNames && Config.buttonNames.length > 0; else tryButtonInfo">
+                <button *ngFor="let button of Config.buttonNames" type="button" class="btn btn-sm btn-outline-primary" (click)="ClientButtonClick(button, rowIdx)">{{button}}</button>
+            </td>
+            <ng-template #tryButtonInfo>
+                <td *ngIf="Config && Config.buttonInfoList && Config.buttonInfoList.length > 0">
+                    <button *ngFor="let buttonInfo of Config.buttonInfoList" type="button" class="btn btn-xs btn-outline-primary {{buttonInfo.class}}"
+                        (click)="ClientButtonInfoClick(buttonInfo, rowIdx)">
+                        {{buttonInfo.text}}
+                        <i *ngIf="buttonInfo.iconClass" class="{{buttonInfo.iconClass}}"></i>
+                    </button>
+                </td>
+            </ng-template>
+
+            <ng-container *ngFor="let field of row; let colIdx = index; " >
+            <td *ngIf="colIdx < row.length -1" [ngClass]="Config.tdClass" [ngStyle]="{'background-color': GetBgColorStyle(rowIdx, colIdx), 'color': GetFgColorStyle(rowIdx, colIdx) }">
+                <div *ngIf="!cellBodyTemplate">
+                    <div *ngIf="paretoColumns.indexOf(columns[colIdx]) > -1; else standardColumn;">
+                        <div class="pareto-td-flex-row">
+                            <div class="bg-dark p-10" class="pareto-svg">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="chart " height="14px"
+                                    role="img" [attr.width]="GetCellScaledValue(rowIdx, colIdx) + '%'">
+                                    <g class="bar">
+                                        <rect class="text-info" width="100%" height="100%" style="fill: currentColor;" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="pareto-value">
+                                &nbsp; {{TruncateDecimalValue(rowIdx, colIdx, 3)}}
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #standardColumn>
+                        <div [ngStyle]="{'background-color': GetBgColorStyle(rowIdx, colIdx), 'color': GetFgColorStyle(rowIdx, colIdx) }">
+                            <a *ngIf="isValueClickLink(colIdx); else iconTd" (click)="onValueClick(colIdx, rowIdx)">{{GetCellText(rowIdx, colIdx)}}</a>
+                            <div #iconTd *ngIf="CellIsIcon(colIdx); else plainTd">
+                                <i [ngClass]="GetCellText(rowIdx, colIdx)" aria-hidden="true"></i>
+                            </div>
+                            <ng-template #plainTd>{{GetCellText(rowIdx, colIdx)}}</ng-template>
+                        </div>
+                    </ng-template>
+                </div>
+                <ng-container *ngTemplateOutlet="cellBodyTemplate; context: {rowObj: row[row.length-1], value: GetCellText(rowIdx, colIdx), columnProp: columns[colIdx]}">
+                </ng-container>
+            </td>
+            </ng-container>
+        </tr>
+        <tr *ngIf="Config.showPaginate"  class="table-active" [ngClass]="Config.outerTrClass" >
+            <td [attr.colspan]="TotalColumnCount()">
+                <div class="form-inline justify-content-between">
+                    <div class="form-group">
+                        <button *ngIf="Config.showFirstLastPageSelector" (click)="PageCrement(-999999)" type="button" class="btn btn-sm btn-primary">
+                            <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                        </button>&nbsp;
+                        <button (click)="PageCrement(-1)" type="button" class="btn btn-sm btn-primary">
+                            <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        </button>&nbsp;Page&nbsp;
+                        <input *ngIf="Config.showPageInput"
+                            class="form-control form-control-sm"
+                            style="width: 50px;"
+                            type="text"
+                            [ngModel]="currentPage"
+                            (ngModelChange)="OnPageNumberChange($event)"
+                         />
+                        <span *ngIf="!Config.showPageInput">{{currentPage}}</span>
+                         &nbsp;of {{maxPage}}
+                        &nbsp;
+                        <button (click)="PageCrement(1)" type="button" class="btn btn-sm btn-primary">
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </button>&nbsp;
+                        <button *ngIf="Config.showFirstLastPageSelector" (click)="PageCrement(999999)" type="button" class="btn btn-sm btn-primary">
+                            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                        </button>&nbsp;
+                        <span *ngIf="Config.showPageRecordsCount">
+                            Records: {{currentRecordStart+1}} - {{currentRecordEnd+1}} of {{filterRows.length}}
+                        </span>
+                    </div>
+                    <div *ngIf="Config.showPageSizeSelector" class="form-group pull-right">
+                        <span class="m-1">Page size:</span>
+                        <select class="form-control form-control-sm" [(ngModel)]="Config.pageSize" (ngModelChange)="onPageSizeChange($event)">
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                            <option>20</option>
+                            <option>50</option>
+                            <option>100</option>
+                            <option>500</option>
+                        </select>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<input *ngIf="Config.selectMode" class='table-selection' #tableSelection type="text" [(ngModel)]='selectedRow'
+      (keyup.arrowdown)="changeSelection(1,0)"  
+      (keyup.arrowup)="changeSelection(-1,0)"
+      (keyup.arrowright)="changeSelection(0,1)"
+      (keyup.arrowleft)="changeSelection(0,-1)">
+
+<ng-template #loading>
+    <i class="fa fa-spinner fa-spin"></i> Loading data...
+</ng-template>
