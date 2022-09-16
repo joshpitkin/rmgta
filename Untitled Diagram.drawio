@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-09-16T22:20:16.993Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="yEdjAUf3vsRkXlbAK940" version="20.3.2" type="github">
+<mxfile host="app.diagrams.net" modified="2022-09-16T22:25:15.873Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" etag="R8ztq6tsgJqydM5GCM7_" version="20.3.2" type="github">
   <diagram id="OfR1z2HdEINGrl3k-H7I" name="Page-1">
     <mxGraphModel dx="1107" dy="787" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -13,7 +13,7 @@
             <mxPoint x="300" y="289.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="JGA2fAvb3s3VT_MG2sKA-5" value="Encrypting the data requires a key.&amp;nbsp; The key is a small string that we can use / track with a blockchain transaction&amp;nbsp;" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;position2=0.35;" vertex="1" parent="1">
+        <mxCell id="JGA2fAvb3s3VT_MG2sKA-5" value="Encrypting the data requires only a key.&amp;nbsp; The key can be a small string that we can use &amp;amp; track with a blockchain transaction, simplifying the &quot;data transaction&quot; process" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;position2=0.35;align=left;" vertex="1" parent="1">
           <mxGeometry x="330" y="60" width="170" height="130" as="geometry" />
         </mxCell>
         <mxCell id="JGA2fAvb3s3VT_MG2sKA-6" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -59,21 +59,21 @@
         <mxCell id="JGA2fAvb3s3VT_MG2sKA-35" value="&lt;h1&gt;Getting Personal Data back into App&amp;nbsp;&lt;/h1&gt;&lt;p&gt;Key &amp;amp; data ID is needed -&amp;gt; sent to API service which decrypts and sends decrypted payload back to App.&amp;nbsp;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="35" y="450" width="345" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="JGA2fAvb3s3VT_MG2sKA-36" value="&lt;h1&gt;Splitting Data into new &quot;tradable datum&quot;&amp;nbsp;&lt;/h1&gt;&lt;p&gt;From App, user chooses fields, rows, aggregation to share based on marketplace request.&amp;nbsp; &amp;nbsp; (transform)&lt;/p&gt;&lt;p&gt;App creates new &quot;datum&quot; and communicates with Blockchain service to create new transactable key.&lt;/p&gt;&lt;p&gt;New key + raw datum sent to API service&lt;/p&gt;&lt;p&gt;API service encrypts and stores transformed data with new key&lt;/p&gt;&lt;p&gt;key + new datum ID is shared to buyer upon payment&lt;/p&gt;&lt;p&gt;key is tradable via blockchain service&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+        <mxCell id="JGA2fAvb3s3VT_MG2sKA-36" value="&lt;h1&gt;Splitting Data into new &quot;tradable datum&quot;&amp;nbsp;&lt;/h1&gt;&lt;p&gt;From App, user chooses fields, rows, aggregation to share based on marketplace request.&amp;nbsp; &amp;nbsp; (transform)&lt;/p&gt;&lt;p&gt;App creates new &quot;datum&quot; and communicates with Blockchain service to create new transactable key for it.&lt;/p&gt;&lt;p&gt;New key + raw datum sent to API service&lt;/p&gt;&lt;p&gt;API service encrypts and stores transformed data with new key&lt;/p&gt;&lt;p&gt;key + new datum ID is shared to buyer upon payment&lt;/p&gt;&lt;p&gt;key is tradable via blockchain service&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="35" y="610" width="395" height="280" as="geometry" />
         </mxCell>
         <mxCell id="JGA2fAvb3s3VT_MG2sKA-37" value="Blockchain Service" style="swimlane;startSize=23;" vertex="1" parent="1">
-          <mxGeometry x="100" y="40" width="180" height="120" as="geometry">
+          <mxGeometry x="100" y="30" width="180" height="140" as="geometry">
             <mxRectangle x="545" y="210" width="150" height="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="JGA2fAvb3s3VT_MG2sKA-41" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.data_encryption_key;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="JGA2fAvb3s3VT_MG2sKA-37">
           <mxGeometry x="141.75" y="60" width="38.25" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="JGA2fAvb3s3VT_MG2sKA-42" value="Key store &amp;amp; generator&lt;br&gt;&lt;br&gt;Keep track of transactions with keys, sale, transfer, expiration, etc." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="JGA2fAvb3s3VT_MG2sKA-37">
-          <mxGeometry x="5" y="30" width="135" height="80" as="geometry" />
+        <mxCell id="JGA2fAvb3s3VT_MG2sKA-42" value="Key store &amp;amp; generator&lt;br&gt;&lt;br&gt;Keep track of transactions with keys.&amp;nbsp; A key should support: sale, transfer, expiration, etc." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="JGA2fAvb3s3VT_MG2sKA-37">
+          <mxGeometry x="6.75" y="40" width="135" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="JGA2fAvb3s3VT_MG2sKA-40" value="&lt;h1&gt;Data &quot;Structure&quot;&amp;nbsp;&lt;/h1&gt;&lt;p&gt;fields / description, etc should be ok to store unencrypted, and make it easier for the app to know what is available for the user to pick from to build new tradable datums.&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+        <mxCell id="JGA2fAvb3s3VT_MG2sKA-40" value="&lt;h1&gt;Data &quot;Structure&quot;&amp;nbsp;&lt;/h1&gt;&lt;p&gt;Field names, description, and some meta-data should be ok to store unencrypted, and make it easier for the app to know what is available for the user to pick from to build new tradable datums.&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="480" y="450" width="340" height="150" as="geometry" />
         </mxCell>
         <mxCell id="JGA2fAvb3s3VT_MG2sKA-43" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.563;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="JGA2fAvb3s3VT_MG2sKA-37" target="JGA2fAvb3s3VT_MG2sKA-23">
@@ -81,6 +81,9 @@
             <mxPoint x="190" y="170" as="sourcePoint" />
             <mxPoint x="185" y="180" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="JGA2fAvb3s3VT_MG2sKA-45" value="MongoDB has a 16mb doc size limit, for larger payloads we&#39;ll need to setup an encrypted filestore&amp;nbsp;" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;align=left;position2=0;" vertex="1" parent="1">
+          <mxGeometry x="680" y="200" width="140" height="110" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
